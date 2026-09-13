@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Polyestertopia</title>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.169.0/build/three.module.js" } }
+</script>
+<style>
+  :root {
+    --bg: #0e1418; --panel: #18212a; --panel-2: #1f2b36; --line: #2c3a47;
+    --text: #e8eef3; --muted: #9fb0be; --accent: #6fd3ff; --warn: #ff5a4d; --good: #5fd36a;
+    --gold: #ffd45a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+    font: 14px/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    overflow: hidden; -webkit-user-select: none; user-select: none; }
+  #board { position: absolute; inset: 0; }
+  canvas { display: block; }
+
+  .bar { position: absolute; left: 0; right: 0; top: 0; display: flex; gap: 14px; align-items: center;
+    padding: 8px 12px; background: linear-gradient(180deg, rgba(14,20,24,.95), rgba(14,20,24,.55));
+    border-bottom: 1px solid var(--line); z-index: 5; flex-wrap: wrap; }
+  .stat { display: flex; gap: 6px; align-items: baseline; }
+  .stat b { font-size: 16px; }
+  .stat span { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+  .grow { flex: 1; }
+  button { font: inherit; color: var(--text); background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+  button:hover:not(:disabled) { border-color: var(--accent); }
+  button:disabled { opacity: .4; cursor: default; }
+  button.primary { background: #27506b; border-color: #3d7ea6; }
+  button.danger { background: #5c2a26; border-color: #8c3d36; }
+
+  .objective { color: var(--gold); font-size: 12px; }
+
+  .card { position: absolute; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 10px; padding: 10px 12px; z-index: 6; box-shadow: 0 8px 28px rgba(0,0,0,.45); }
+  #unitcard { left: 12px; bottom: 12px; min-width: 230px; max-width: 320px; display: none; }
+  #unitcard h3 { margin: 0 0 4px; font-size: 15px; }
+  #unitcard .row { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; }
+  #unitcard .actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .preview { margin-top: 6px; padding: 6px; background: var(--panel-2); border-radius: 6px; font-size: 12px; }
+  .preview .dmg { color: var(--warn); font-weight: 700; }
+  .preview .ret { color: var(--gold); }
+
+  #log { right: 12px; bottom: 12px; width: 260px; max-height: 180px; overflow: hidden;
+    font-size: 12px; color: var(--muted); }
+  #log div { padding: 1px 0; }
+
+  .modal-back { position: absolute; inset: 0; background: rgba(6,10,13,.72); z-index: 20;
+    display: none; align-items: center; justify-content: center; padding: 20px; }
+  .modal { background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px 20px; max-width: 640px; width: 100%; max-height: 84vh; overflow: auto; }
+  .modal h2 { margin: 0 0 6px; }
+  .modal p.sub { margin: 0 0 14px; color: var(--muted); }
+  .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .choice { text-align: left; padding: 10px; border-radius: 8px; }
+  .choice b { display: block; margin-bottom: 2px; }
+  .choice small { color: var(--muted); }
+  .techgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tier { border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+  .tier h4 { margin: 0 0 6px; font-size: 12px; color: var(--muted); text-transform: uppercase; }
+  .tech { width: 100%; margin-bottom: 5px; text-align: left; font-size: 12px; padding: 5px 8px; }
+  .tech.owned { background: #234a2c; border-color: #3c7a48; }
+  .banner { position: absolute; top: 52px; left: 50%; transform: translateX(-50%);
+    background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 6px 14px; z-index: 7; display: none; }
+  .tribes { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+  .swatch { width: 100%; height: 8px; border-radius: 4px; margin-bottom: 6px; display: block; }
+</style>
+</head>
+<body>
+  <div id="board"></div>
+  <div class="bar" id="bar"></div>
+  <div class="banner" id="banner"></div>
+  <div class="card" id="unitcard"></div>
+  <div class="card" id="log"></div>
+  <div class="modal-back" id="modalback"><div class="modal" id="modal"></div></div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

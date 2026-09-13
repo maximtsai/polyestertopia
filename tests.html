@@ -1,0 +1,53 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Polyestertopia — checks</title>
+<script type="importmap">
+{ "imports": { "three": "https://unpkg.com/three@0.169.0/build/three.module.js" } }
+</script>
+<style>
+ body{background:#0e1418;color:#e8eef3;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;padding:20px}
+ h2{font-size:14px;margin:18px 0 6px;color:#6fd3ff} .pass{color:#5fd36a} .fail{color:#ff5a4d}
+ table{border-collapse:collapse} td{padding:2px 12px 2px 0;vertical-align:top}
+</style></head>
+<body><div id="out">running…</div>
+<script type="module">
+import { runCombatChecks } from './tools/verify-combat.js';
+import { simulate } from './tools/sim.js';
+
+const out = document.getElementById('out');
+const lines = [];
+const say = (s) => { lines.push(s); out.innerHTML = lines.join('<br>'); };
+
+say('<h2>Combat formula</h2>');
+let failed = 0;
+for (const r of runCombatChecks()) {
+  if (!r.pass) failed++;
+  say(`<span class="${r.pass ? 'pass' : 'fail'}">${r.pass ? 'PASS' : 'FAIL'}</span>  ${r.name} — got ${r.got.join('/')}, expected ${r.expect.join('/')}`);
+}
+say(`<b>${failed ? failed + ' failing' : 'all combat checks pass'}</b>`);
+
+say('<h2>Balance simulation (AI vs AI)</h2>');
+setTimeout(() => {
+  const t0 = performance.now();
+  for (const lvl of [1, 2, 3, 4]) {
+    const r = simulate(lvl, 'imperius', { games: 30, attacker: 4 });
+    say(`level ${lvl}: attacker(diff 4) win rate ${(r.winRate * 100).toFixed(0)}% · avg turns ${r.avgTurns} · score ${r.avgScoreHuman} vs ${r.avgScoreEnemy}`);
+    say(`&nbsp;&nbsp;outcomes: ${Object.entries(r.reasons).map(([k, v]) => `${v}x ${k}`).join(' · ')}`);
+  }
+  say(`<br>done in ${Math.round(performance.now() - t0)} ms`);
+  window.__done = true;
+}, 30);
+</script></body></html>
+<script type="module">
+// Difficulty ladder: the level-4 weight set must actually beat the level-1 set.
+import { simulate } from './tools/sim.js';
+const out = document.getElementById('out');
+const say = (s) => { out.innerHTML += '<br>' + s; };
+setTimeout(() => {
+  say('<h2>Difficulty ladder (same map, different weights)</h2>');
+  const strong = simulate(1, 'imperius', { games: 30, attacker: 4, defender: 1 });
+  const weak   = simulate(1, 'imperius', { games: 30, attacker: 1, defender: 4 });
+  say(`strong attacker (4) vs weak defender (1): ${(strong.winRate * 100).toFixed(0)}% wins`);
+  say(`weak attacker (1) vs strong defender (4): ${(weak.winRate * 100).toFixed(0)}% wins`);
+  window.__done2 = true;
+}, 9000);
+</script>
