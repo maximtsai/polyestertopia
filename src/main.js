@@ -40,6 +40,7 @@ class Game {
   }
 
   start(tribeId, levelId) {
+    this.hud.hideModal();
     if (this.world) {
       this.ctx.scene.remove(this.world.terrainGroup, this.world.entities, this.world.overlay);
     }
@@ -52,6 +53,7 @@ class Game {
     this.world.build();
     this.input = attachInput(this);
     this.wireLog();
+    document.getElementById('log').innerHTML = '';
     this.hud.render(this.state);
     this.hud.flash(`${TRIBES[tribeId].name} — ${level.name}`, 2600);
     this.hud.log(level.brief);

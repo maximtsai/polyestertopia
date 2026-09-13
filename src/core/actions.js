@@ -200,7 +200,8 @@ function buildingFits(state, tile, building) {
     case BUILDING.FARM:       return tile.resource === RESOURCE.CROP;
     case BUILDING.MINE:       return tile.resource === RESOURCE.METAL;
     case BUILDING.LUMBER_HUT: return tile.terrain === TERRAIN.FOREST;
-    case BUILDING.PORT:       return tile.terrain === TERRAIN.WATER;
+    case BUILDING.PORT:       return tile.terrain === TERRAIN.WATER
+                                     && uniqueInCity(state, tile, building);
     case BUILDING.TEMPLE:     return plain && uniqueInCity(state, tile, building);
     case BUILDING.FORGE:      return plain && uniqueInCity(state, tile, building)
                                      && adjacentTo(state, tile, BUILDING.MINE);

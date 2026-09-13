@@ -103,9 +103,9 @@ function makeHealthBar() {
   const group = new THREE.Group();
   group.name = 'hpbar';
   const bg = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x1a1d21, depthTest: false }));
-  bg.center.set(0, 0.5); bg.scale.set(0.6, 0.09, 1); bg.position.set(-0.3, 1.0, 0);
+  bg.center.set(0, 0.5); bg.scale.set(0.6, 0.09, 1); bg.position.set(-0.3, 0.78, 0);
   const fill = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x5fd36a, depthTest: false }));
-  fill.center.set(0, 0.5); fill.scale.set(0.58, 0.07, 1); fill.position.set(-0.29, 1.0, 0.01);
+  fill.center.set(0, 0.5); fill.scale.set(0.58, 0.07, 1); fill.position.set(-0.29, 0.78, 0.01);
   fill.name = 'fill';
   group.add(bg, fill);
   group.renderOrder = 999;
