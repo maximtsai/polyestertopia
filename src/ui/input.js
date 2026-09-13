@@ -140,6 +140,11 @@ export function attachInput(game) {
         onClick: () => act({ type: A.UPGRADE, unitId: unit.id, to }),
       });
     }
+    // A unit parked on a city would otherwise block access to that city's panel.
+    const here = state.cityAt(unit.x, unit.y);
+    if (here && here.owner === HUMAN) {
+      actions.push({ label: 'Open city', onClick: () => game.openCity(here) });
+    }
     actions.push({ label: 'Skip', onClick: () => { unit.moved = true; unit.attacked = true; game.afterAction(); deselect(); } });
 
     renderUnitCard({ title: UNITS[unit.type].name, rows, preview, actions });

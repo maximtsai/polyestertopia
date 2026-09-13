@@ -30,7 +30,7 @@ export function techPanel(state, onResearch, onClose) {
       if (t.tier !== tier) continue;
       const owned = p.techs.includes(id);
       const b = node('button', `tech${owned ? ' owned' : ''}`);
-      b.innerHTML = `${t.name}<br><small>${t.unlocks.join(', ')}</small>`;
+      b.innerHTML = `${t.name}<br><small>${t.unlocks.map(readable).join(', ')}</small>`;
       b.disabled = owned || !canResearch(p, id) || p.stars < techCost(tier, cities);
       b.onclick = () => onResearch(id);
       col.appendChild(b);
@@ -43,6 +43,21 @@ export function techPanel(state, onResearch, onClose) {
   close.onclick = onClose;
   root.appendChild(close);
   return root;
+}
+
+/** "build:lumber_hut" -> "build Lumber Hut" */
+function readable(unlock) {
+  const [kind, what] = unlock.split(':');
+  const name = label(what);
+  switch (kind) {
+    case 'unit':    return `train ${name}`;
+    case 'build':   return `build ${name}`;
+    case 'harvest': return `harvest ${name}`;
+    case 'move':    return `cross ${name}`;
+    case 'action':  return name;
+    case 'vision':  return `see enemy ${name}`;
+    default:        return name;
+  }
 }
 
 export function cityPanel(state, city, { onTrain, onBuild, onClose }) {
@@ -64,6 +79,11 @@ export function cityPanel(state, city, { onTrain, onBuild, onClose }) {
     choices.appendChild(b);
   }
   root.appendChild(choices);
+  if (state.unitAt(city.x, city.y)) {
+    root.appendChild(node('p', 'sub', 'A unit is standing on the city centre — move it off before training another.'));
+  } else if (city.unitCount >= city.level + 1) {
+    root.appendChild(node('p', 'sub', `This city supports ${city.level + 1} units. Grow it to train more.`));
+  }
 
   const buildables = buildOptions(state, city);
   if (buildables.length) {

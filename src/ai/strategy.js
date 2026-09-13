@@ -81,7 +81,8 @@ export function think(state, playerId, difficulty) {
   if (nearWater) plan.push('fishing', 'sailing');
 
   const enemyHasWalls = state.cities.some((c) => c.owner !== playerId && c.walls);
-  if (enemyHasWalls && !plan.includes('mathematics')) plan.push('forestry', 'mathematics');
+  // Walls cannot be answered with more Warriors, so siege tech jumps the queue.
+  if (enemyHasWalls && !plan.includes('mathematics')) plan.unshift('forestry', 'mathematics');
   return {
     playerId,
     posture,

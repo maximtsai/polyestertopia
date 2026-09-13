@@ -39,7 +39,7 @@ export class World {
 
     const w = this.state.map.width, h = this.state.map.height;
     this.ctx.focusOn((w - 1) / 2, (h - 1) / 2);
-    this.ctx.setZoom(11 / Math.max(w, h) * 1.35);
+    this.ctx.setZoom(11 / Math.max(w, h) * 1.7);
   }
 
   addCity(city) {
