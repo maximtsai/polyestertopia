@@ -72,6 +72,8 @@ export class World {
       if (!mesh || mesh.userData.type !== unit.type) {
         if (mesh) { this.entities.remove(mesh); disposeTree(mesh); }
         mesh = buildUnitMesh(unit, this.palettes[unit.owner]);
+        // Draw units in the foreground pass, retaining depth within each model.
+        mesh.traverse(object => object.layers.set(1));
         mesh.userData.type = unit.type;
         mesh.position.set(unit.x, this.tileTop(unit.x, unit.y), unit.y);
         this.entities.add(mesh);

@@ -17,12 +17,16 @@ export function createScene(container) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   container.appendChild(renderer.domElement);
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.75));
+  const ambient = new THREE.AmbientLight(0xffffff, 0.75);
+  ambient.layers.enable(1);
+  scene.add(ambient);
   const sun = new THREE.DirectionalLight(0xfff2d8, 1.0);
   sun.position.set(20, 40, 10);
+  sun.layers.enable(1);
   scene.add(sun);
   const fill = new THREE.DirectionalLight(0x9fc6ff, 0.35);
   fill.position.set(-20, 20, -15);
+  fill.layers.enable(1);
   scene.add(fill);
 
   const state = { zoom: 1, center: new THREE.Vector3(0, 0, 0) };
@@ -63,6 +67,27 @@ export function createScene(container) {
     return hits.length ? hits[0] : null;
   }
 
-  return { scene, camera, renderer, resize, focusOn, setZoom, pick, viewState: state,
-    render: () => renderer.render(scene, camera) };
+  function render() {
+    // Terrain, buildings and tile highlights form the base image. Clearing only
+    // depth lets units cover that image without losing their own 3D occlusion.
+    const background = scene.background;
+    const mask = camera.layers.mask;
+    const autoClear = renderer.autoClear;
+    try {
+      camera.layers.set(0);
+      renderer.autoClear = true;
+      renderer.render(scene, camera);
+      renderer.clearDepth();
+      camera.layers.set(1);
+      scene.background = null;
+      renderer.autoClear = false;
+      renderer.render(scene, camera);
+    } finally {
+      scene.background = background;
+      camera.layers.mask = mask;
+      renderer.autoClear = autoClear;
+    }
+  }
+
+  return { scene, camera, renderer, resize, focusOn, setZoom, pick, viewState: state, render };
 }
