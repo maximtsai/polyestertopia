@@ -66,11 +66,25 @@ export function createHud() {
   }
 
   function showModal(html) {
+    modal.firstElementChild?.dispose?.();
     modal.innerHTML = '';
     modal.appendChild(html);
+    const isStart = html.classList.contains('start-menu');
+    back.classList.toggle('start-back', isStart);
+    document.body.classList.toggle('picking-tribe', isStart);
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', html.querySelector('h2')?.textContent || 'Game options');
     back.style.display = 'flex';
+    html.mount?.();
+    (html.querySelector('button[aria-pressed="true"]') || html.querySelector('button:not(:disabled)'))?.focus({ preventScroll: true });
   }
-  function hideModal() { back.style.display = 'none'; }
+  function hideModal() {
+    modal.firstElementChild?.dispose?.();
+    modal.innerHTML = '';
+    back.style.display = 'none';
+    document.body.classList.remove('picking-tribe');
+  }
 
   return {
     render, log, flash, showModal, hideModal,

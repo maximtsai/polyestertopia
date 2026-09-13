@@ -2,9 +2,10 @@ import { TECHS, techCost, canResearch } from '../core/tech.js';
 import { UNITS } from '../core/units.js';
 import { unitsAvailable } from '../core/tech.js';
 import { rewardsFor, BUILDING_INFO } from '../core/economy.js';
-import { TRIBES, TRIBE_IDS } from '../campaign/tribes.js';
+import { TRIBES } from '../campaign/tribes.js';
 import { LEVELS } from '../campaign/levels.js';
 import { HUMAN } from '../core/game.js';
+import { mountTribePortraits } from '../render/tribePortraits.js';
 
 const node = (tag, cls, text) => {
   const e = document.createElement(tag);
@@ -115,36 +116,41 @@ export function rewardModal(city, onPick) {
 }
 
 export function startMenu({ unlocked, onStart }) {
-  const root = node('div');
-  root.appendChild(node('h2', null, 'Polyestertopia'));
-  root.appendChild(node('p', 'sub', 'A four-level campaign. Deterministic combat: every fight can be calculated before you commit.'));
+  const root = node('div', 'start-menu');
+  root.appendChild(node('p', 'eyebrow', 'A little world. A grand adventure.'));
+  root.appendChild(node('h2', 'game-title', 'Polyestertopia'));
+  root.appendChild(node('p', 'sub', 'Choose a people. Build a kingdom. Write your story.'));
 
   let tribe = 'imperius';
   let level = 1;
 
-  root.appendChild(node('h4', null, 'Choose your tribe'));
+  root.appendChild(node('h4', 'section-title', '— Regular Tribes —'));
   const tribeGrid = node('div', 'tribes');
   const tribeButtons = [];
-  for (const id of TRIBE_IDS) {
+  const portraitSlots = [];
+  for (const id of ['xinxi', 'imperius', 'bardur', 'oumaji']) {
     const t = TRIBES[id];
-    const b = node('button', 'choice');
-    const sw = node('span', 'swatch');
-    sw.style.background = `#${t.colors.primary.toString(16).padStart(6, '0')}`;
-    b.appendChild(sw);
-    b.insertAdjacentHTML('beforeend', `<b>${t.name}</b><small>${t.blurb}</small>`);
+    const b = node('button', 'tribe-choice');
+    const portrait = node('span', 'tribe-portrait');
+    portraitSlots.push([id, portrait]);
+    b.appendChild(portrait);
+    b.appendChild(node('b', null, t.name));
+    b.appendChild(node('span', 'tribe-check', '✓'));
     b.onclick = () => { tribe = id; paint(); };
     tribeButtons.push([id, b]);
     tribeGrid.appendChild(b);
   }
   root.appendChild(tribeGrid);
+  const detail = node('div', 'tribe-detail');
+  root.appendChild(detail);
 
-  root.appendChild(node('h4', null, 'Level'));
-  const levelGrid = node('div', 'choices');
+  root.appendChild(node('h4', 'section-title campaign-heading', 'Your campaign'));
+  const levelGrid = node('div', 'choices campaign-levels');
   const levelButtons = [];
   for (const l of LEVELS) {
     const b = node('button', 'choice');
     const locked = l.id > unlocked;
-    b.innerHTML = `<b>${l.id}. ${l.name}</b><small>vs ${TRIBES[l.enemyTribe].name} · ${l.turnLimit} turns${locked ? ' · locked' : ''}</small>`;
+    b.innerHTML = `<span class="level-number">${locked ? '◇' : '0' + l.id}</span><b>${l.name}</b><small>${locked ? 'Locked · complete chapter ' + (l.id - 1) : `vs ${TRIBES[l.enemyTribe].name} · ${l.turnLimit} turns`}</small>`;
     b.disabled = locked;
     b.onclick = () => { level = l.id; paint(); };
     levelButtons.push([l.id, b]);
@@ -152,20 +158,23 @@ export function startMenu({ unlocked, onStart }) {
   }
   root.appendChild(levelGrid);
 
-  const brief = node('p', 'sub');
+  const brief = node('p', 'sub campaign-brief');
   root.appendChild(brief);
 
-  const go = node('button', 'primary', 'Start');
+  const go = node('button', 'primary start-button', 'Begin adventure →');
   go.style.marginTop = '8px';
   go.onclick = () => onStart(tribe, level);
   root.appendChild(go);
 
   function paint() {
-    for (const [id, b] of tribeButtons) b.style.borderColor = id === tribe ? '#6fd3ff' : '';
-    for (const [id, b] of levelButtons) b.style.borderColor = id === level ? '#6fd3ff' : '';
+    for (const [id, b] of tribeButtons) { b.classList.toggle('selected', id === tribe); b.setAttribute('aria-pressed', String(id === tribe)); }
+    for (const [id, b] of levelButtons) { b.classList.toggle('selected', id === level); b.setAttribute('aria-pressed', String(id === level)); }
+    const t = TRIBES[tribe];
+    detail.innerHTML = `<strong>${t.name}</strong><span>${t.blurb}</span><small>Starting skill · ${TECHS[t.startTech].name}</small>`;
     brief.textContent = LEVELS.find((l) => l.id === level).brief;
   }
   paint();
+  root.mount = () => { root.dispose = mountTribePortraits(portraitSlots); };
   return root;
 }
 

@@ -1,0 +1,78 @@
+:root { --bg:#173e59; --panel:#173f5b; --panel-2:#235574; --line:#6489a0; --text:#fffdf2; --muted:#c2dbe8; --accent:#ffdf79; --gold:#ffde6a; }
+button { min-height:42px; border:2px solid #ffffff45; border-radius:10px; font-weight:600; transition:background .16s, transform .16s, border-color .16s; }
+button:hover:not(:disabled) { background:#357296; transform:translateY(-2px); border-color:#fff5ce; }
+button:active:not(:disabled) { transform:translateY(1px); }
+button:focus-visible { outline:3px solid #ffe68d; outline-offset:4px; }
+button.primary { background:#f4d578; color:#233f51; border-color:#fff0b8; box-shadow:0 4px 0 #967b3a; }
+button.primary:hover:not(:disabled) { background:#ffe5a0; }
+.bar { margin:14px; width:calc(100% - 28px); border:1px solid #ffffff45; border-radius:16px; background:#153e59ed; padding:12px 18px; gap:20px; box-shadow:0 6px 24px #102c4140; }
+.stat { flex-direction:column; gap:0; }
+.stat b { font-size:21px; line-height:1.15; }
+.gold { color:var(--gold); }
+.objective { max-width:400px; line-height:1.5; }
+.card { border:1px solid #ffffff50; border-radius:14px; padding:16px; background:#173f5bf2; }
+#log { max-height:145px; }
+#log:empty, .bar:empty { display:none; }
+.modal-back { background:#0d293aba; backdrop-filter:blur(5px); }
+.modal { border:1px solid #ffffff55; border-radius:20px; box-shadow:0 20px 70px #09223670; padding:28px; }
+.modal h2 { font-size:28px; }
+.tier { background:#102e453d; border-color:#ffffff30; padding:12px; }
+.banner { top:108px; border-color:#ffdf79; border-radius:30px; }
+.start-back { background:radial-gradient(ellipse at 50% 18%, #fb6ba7 0%, #ef5599 55%, #cf4384 100%); padding:28px 20px; overflow:auto; }
+.start-back::before { content:''; position:fixed; inset:0; pointer-events:none; opacity:.13; background-image:linear-gradient(30deg,transparent 48%,#fff 49%,transparent 50%),linear-gradient(150deg,transparent 48%,#fff 49%,transparent 50%); background-size:180px 310px; mask-image:linear-gradient(transparent 25%,black); }
+.start-back .modal { width:min(960px,100%); max-width:960px; max-height:none; overflow:visible; background:none; border:0; border-radius:0; box-shadow:none; padding:0; position:relative; margin:auto; }
+.picking-tribe .bar,.picking-tribe #unitcard,.picking-tribe #log,.picking-tribe .banner { visibility:hidden; }
+.start-menu { text-align:center; }
+.eyebrow { margin:0 0 4px; text-transform:uppercase; letter-spacing:.24em; font-size:11px; font-weight:750; color:#ffe4ef; }
+.start-menu .game-title { font-size:clamp(32px,5vw,52px); letter-spacing:-2px; line-height:1.2; text-shadow:0 3px 0 #b9337440; margin-bottom:8px; }
+.start-menu p.sub { color:#fff3f8; }
+.section-title { font-size:23px; font-weight:500; font-style:italic; margin:22px 0 14px; }
+.tribes { grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; max-width:770px; margin:auto; }
+.tribe-choice { position:relative; background:none; border:0; padding:6px; box-shadow:none; font-weight:500; }
+.tribe-choice:hover:not(:disabled) { background:none; }
+.tribe-portrait { display:block; width:100%; aspect-ratio:1; border-radius:50%; overflow:hidden; border:3px solid #fff4; background:radial-gradient(circle at 35% 25%,#64c7f6,#3095d8 70%); box-shadow:0 6px 0 #b82b6855; transition:border-color .2s,box-shadow .2s; font-size:70px; }
+.tribe-portrait canvas { width:100%!important; height:100%!important; }
+.tribe-choice b { display:block; font-size:20px; font-style:italic; margin-top:12px; font-weight:500; }
+.tribe-choice.selected .tribe-portrait { border-color:#fff5c9; box-shadow:0 0 0 5px #ffdb7b,0 9px 0 #b82b6855; }
+.tribe-check { display:none; position:absolute; top:8px; right:8px; border-radius:50%; width:27px; height:27px; background:#ffe298; color:#6d4c2e; font-weight:bold; border:2px solid #fff5d4; }
+.selected .tribe-check { display:block; }
+.tribe-detail { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:5px 12px; margin:18px auto 0; max-width:730px; min-height:68px; padding:12px 20px; border-radius:12px; background:#af286433; }
+.tribe-detail strong { color:#ffe6a5; }
+.tribe-detail span { font-size:14px; }
+.tribe-detail small { width:100%; color:#ffe2ef; font-size:12px; }
+.campaign-heading { font-size:18px; margin-top:22px; }
+.campaign-levels { grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.campaign-levels .choice { background:#9d2e6540; border-color:#ffffff30; padding:14px; text-align:center; }
+.campaign-levels .choice.selected { background:#fff0da; color:#703352; border-color:#fff8e8; box-shadow:0 4px 0 #ae386a; }
+.campaign-levels .choice small { color:inherit; font-size:11px; opacity:.85; }
+.campaign-levels .choice:disabled { opacity:.52; }
+.level-number { display:block; font-size:23px; line-height:1.3; margin-bottom:4px; }
+.start-menu .campaign-brief { font-size:12px; max-width:660px; margin:18px auto 8px; min-height:35px; }
+.start-button { min-width:270px; font-size:18px; padding:12px 30px; border-radius:12px; }
+@media(max-width:600px) {
+  .start-back { padding:24px 16px; }
+  .tribes { gap:8px; }
+  .tribe-choice { padding:3px; }
+  .tribe-choice b { font-size:15px; }
+  .tribe-check { width:21px; height:21px; font-size:12px; right:0; top:0; }
+  .campaign-levels { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .campaign-levels .choice { padding:10px; }
+  .section-title { font-size:20px; }
+  .bar { margin:6px; width:calc(100% - 12px); padding:9px; gap:12px; }
+  .stat b { font-size:17px; }
+  .objective { order:2; flex-basis:100%; max-width:none; }
+  .bar button { padding:5px 9px; font-size:12px; }
+  #log { display:none; }
+  .techgrid { grid-template-columns:1fr; }
+  .modal { padding:20px; }
+}
+@media(min-width:601px) and (max-height:800px) {
+  .start-back { padding:18px 20px; }
+  .start-menu .game-title { font-size:40px; }
+  .tribes { max-width:640px; }
+  .section-title { margin:14px 0 10px; }
+  .tribe-detail { margin-top:12px; min-height:58px; padding:8px 16px; }
+  .campaign-levels .choice { padding:9px; }
+  .start-menu .campaign-brief { margin:12px auto 4px; min-height:28px; }
+}
+@media(prefers-reduced-motion:reduce) { button { transition:none; } }

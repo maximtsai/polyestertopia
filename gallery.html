@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model gallery · Polyestertopia</title>
+  <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.169.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.169.0/examples/jsm/"}}</script>
+  <link rel="stylesheet" href="./src/ui/gallery.css">
+</head>
+<body>
+  <header><div><p class="eyebrow">Polyestertopia / Art workshop</p><h1>Model gallery</h1></div><a href="./index.html">Play game ↗</a></header>
+  <main>
+    <section class="library" aria-label="Model library">
+      <div class="filters"><label>Find a model<input id="search" type="search" placeholder="Search units, terrain, objects…"></label><label>Category<select id="category"><option value="all">All models</option></select></label><label>Tribe palette<select id="tribe"></select></label></div>
+      <p id="count" role="status"></p><div id="models"></div>
+    </section>
+    <aside aria-label="Model inspector">
+      <div class="inspector-heading"><p id="kind" class="eyebrow"></p><h2 id="name"></h2></div>
+      <div id="stage" tabindex="0" aria-label="3D preview. Drag to rotate; scroll to zoom. Arrow keys rotate; plus and minus zoom."></div>
+      <div class="toolbar"><button id="reset">Reset view</button><button id="size" aria-pressed="false">Board scale</button><label><input id="rotate" type="checkbox">Auto rotate</label><label><input id="wire" type="checkbox">Wireframe</label></div>
+      <p class="hint">Drag to orbit · scroll to zoom · arrows to rotate</p>
+      <dl><dt>Source</dt><dd><a id="source"></a></dd><dt>Geometry</dt><dd id="geometry"></dd></dl>
+      <p id="note" class="hint"></p>
+      <p class="hint">These are the game’s live model builders. Edit their source and refresh this page to inspect changes.</p>
+    </aside>
+  </main>
+  <p id="error" role="alert" hidden></p>
+  <script type="module" src="./src/gallery.js"></script>
+</body>
+</html>
