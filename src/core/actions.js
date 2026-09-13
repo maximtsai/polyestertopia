@@ -180,7 +180,7 @@ export function generateActions(state, playerId) {
     for (const [b, info] of Object.entries(BUILDING_INFO)) {
       if (tile.building) break;
       if (!unlocked.has(`build:${b}`)) continue;
-      if (!buildingFits(tile, b)) continue;
+      if (!buildingFits(state, tile, b)) continue;
       if (player.stars >= info.cost) acts.push({ type: A.BUILD, x: tile.x, y: tile.y, building: b });
     }
   }
@@ -189,14 +189,40 @@ export function generateActions(state, playerId) {
   return acts;
 }
 
-function buildingFits(tile, building) {
+/**
+ * Placement rules. The advanced buildings are one-per-city and need an adjacent
+ * source building, exactly as in Polytopia - without that the AI (and a bored
+ * player) can carpet every field tile with forges.
+ */
+function buildingFits(state, tile, building) {
+  const plain = tile.terrain === TERRAIN.FIELD && !tile.city;
   switch (building) {
     case BUILDING.FARM:       return tile.resource === RESOURCE.CROP;
     case BUILDING.MINE:       return tile.resource === RESOURCE.METAL;
     case BUILDING.LUMBER_HUT: return tile.terrain === TERRAIN.FOREST;
     case BUILDING.PORT:       return tile.terrain === TERRAIN.WATER;
-    default:                  return tile.terrain === TERRAIN.FIELD && !tile.city;
+    case BUILDING.TEMPLE:     return plain && uniqueInCity(state, tile, building);
+    case BUILDING.FORGE:      return plain && uniqueInCity(state, tile, building)
+                                     && adjacentTo(state, tile, BUILDING.MINE);
+    case BUILDING.SAWMILL:    return plain && uniqueInCity(state, tile, building)
+                                     && adjacentTo(state, tile, BUILDING.LUMBER_HUT);
+    case BUILDING.WINDMILL:   return plain && uniqueInCity(state, tile, building)
+                                     && adjacentTo(state, tile, BUILDING.FARM);
+    case BUILDING.MARKET:     return plain && uniqueInCity(state, tile, building)
+                                     && state.map.neighbors(tile.x, tile.y).some((n) => n.building);
+    default:                  return plain;
   }
+}
+
+function uniqueInCity(state, tile, building) {
+  if (!tile.cityRef) return false;
+  return !state.map.tiles.some(
+    (t) => t.building === building && t.cityRef
+        && t.cityRef.x === tile.cityRef.x && t.cityRef.y === tile.cityRef.y);
+}
+
+function adjacentTo(state, tile, building) {
+  return state.map.neighbors(tile.x, tile.y).some((n) => n.building === building);
 }
 
 // ---------------------------------------------------------------------------

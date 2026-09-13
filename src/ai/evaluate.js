@@ -177,7 +177,13 @@ function scoreTrain(state, action, ctx, W) {
 function scoreResearch(state, action, ctx, W) {
   const idx = ctx.techPlan.indexOf(action.tech);
   if (idx < 0) return -1;
-  return (ctx.techPlan.length - idx) * W.research;
+  let v = (ctx.techPlan.length - idx) * W.research;
+  // Walls are unbreakable without siege, so the tech that unlocks catapults has
+  // to outrank cheap early techs rather than sit at the end of a priority list.
+  if (ctx.enemyHasWalls && (action.tech === 'mathematics' || action.tech === 'forestry')) {
+    v += W.siegeUnit * 2;
+  }
+  return v;
 }
 
 function scoreReward(action, W) {

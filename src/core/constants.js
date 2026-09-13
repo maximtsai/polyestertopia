@@ -66,6 +66,6 @@ export const SCORE = {
   TECH_TIER: [0, 100, 200, 300],
   CITY_LEVEL: 5,
   UNIT: 5,
-  TILE_EXPLORED: 5,
+  TILE_EXPLORED: 2,
   BUILDING: 20,
 };

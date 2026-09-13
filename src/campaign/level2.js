@@ -54,5 +54,5 @@ export default {
     {"x": 2, "y": 11, "owner": "player", "type": "warrior"},
     {"x": 11, "y": 2, "owner": "enemy", "type": "warrior"},
   ],
-  objective: { kind: 'score', target: 1700 },
+  objective: { kind: 'score', target: 1150 },
 };

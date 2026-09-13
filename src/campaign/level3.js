@@ -51,13 +51,13 @@ export default {
     {"x": 12, "y": 8, "res": "metal"},
   ],
   cities: [
-    {"x": 2, "y": 12, "owner": "player", "capital": true, "level": 2},
+    {"x": 2, "y": 12, "owner": "player", "capital": true, "level": 3},
     {"x": 4, "y": 6, "owner": "player", "level": 1},
     {"x": 11, "y": 3, "owner": "enemy", "capital": true, "level": 3, "walls": true},
     {"x": 10, "y": 8, "owner": "enemy", "level": 2, "walls": true},
-    {"x": 11, "y": 12, "owner": "enemy", "level": 2, "walls": true},
+    {"x": 11, "y": 12, "owner": "enemy", "level": 2},
     {"x": 5, "y": 2, "owner": null, "level": 1},
-    {"x": 4, "y": 14, "owner": null, "level": 1},
+    {"x": 10, "y": 12, "owner": null, "level": 1},
   ],
   units: [
     {"x": 2, "y": 12, "owner": "player", "type": "warrior"},
