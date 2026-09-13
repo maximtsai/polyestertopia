@@ -20,8 +20,11 @@ export function takeTurn(state, playerId, difficulty = 2) {
     const actions = generateActions(state, playerId).filter((a) => a.type !== A.END_TURN);
     if (!actions.length) break;
 
+    // A small seeded jitter breaks ties. Without it the AI is perfectly
+    // deterministic, which both makes it memorisable across replays and makes
+    // the balance simulator report zero variance.
     const scored = actions
-      .map((a) => ({ a, s: scoreAction(state, a, ctx, W) }))
+      .map((a) => ({ a, s: scoreAction(state, a, ctx, W) + state.rng.next() * W.jitter }))
       .filter((e) => Number.isFinite(e.s) && e.s > 0)
       .sort((x, y) => y.s - x.s);
 

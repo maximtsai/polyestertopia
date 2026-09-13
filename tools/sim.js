@@ -11,12 +11,15 @@ import { A, apply } from '../src/core/actions.js';
  *
  * `attacker` is the difficulty used for the human seat, `defender` for the AI.
  */
+const TRIBE_CYCLE = ['imperius', 'bardur', 'xinxi', 'oumaji'];
+
 export function simulate(levelId, tribe, { games = 50, attacker = 4, defender = null } = {}) {
   const level = levelById(levelId);
   const out = { levelId, games, wins: 0, losses: 0, turns: [], scores: [], reasons: {} };
 
   for (let i = 0; i < games; i++) {
-    const state = buildGame(level, tribe, 1000 + i * 17);
+    // vary both the seed and the player's tribe so the sample is not one game repeated
+    const state = buildGame(level, tribe || TRIBE_CYCLE[i % TRIBE_CYCLE.length], 1000 + i * 17);
     const enemyDifficulty = defender ?? level.difficulty;
     let verdict = { over: false };
     let guard = 0;

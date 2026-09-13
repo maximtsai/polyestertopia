@@ -29,7 +29,7 @@ say('<h2>Balance simulation (AI vs AI)</h2>');
 setTimeout(() => {
   const t0 = performance.now();
   for (const lvl of [1, 2, 3, 4]) {
-    const r = simulate(lvl, 'imperius', { games: 30, attacker: 4 });
+    const r = simulate(lvl, null, { games: 30, attacker: 4 });
     say(`level ${lvl}: attacker(diff 4) win rate ${(r.winRate * 100).toFixed(0)}% · avg turns ${r.avgTurns} · score ${r.avgScoreHuman} vs ${r.avgScoreEnemy}`);
     say(`&nbsp;&nbsp;outcomes: ${Object.entries(r.reasons).map(([k, v]) => `${v}x ${k}`).join(' · ')}`);
   }
@@ -44,8 +44,8 @@ const out = document.getElementById('out');
 const say = (s) => { out.innerHTML += '<br>' + s; };
 setTimeout(() => {
   say('<h2>Difficulty ladder (same map, different weights)</h2>');
-  const strong = simulate(1, 'imperius', { games: 30, attacker: 4, defender: 1 });
-  const weak   = simulate(1, 'imperius', { games: 30, attacker: 1, defender: 4 });
+  const strong = simulate(1, null, { games: 30, attacker: 4, defender: 1 });
+  const weak   = simulate(1, null, { games: 30, attacker: 1, defender: 4 });
   say(`strong attacker (4) vs weak defender (1): ${(strong.winRate * 100).toFixed(0)}% wins`);
   say(`weak attacker (1) vs strong defender (4): ${(weak.winRate * 100).toFixed(0)}% wins`);
   window.__done2 = true;

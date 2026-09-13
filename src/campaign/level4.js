@@ -56,9 +56,9 @@ export default {
     {"x": 6, "y": 15, "res": "game"},
   ],
   cities: [
-    {"x": 2, "y": 14, "owner": "player", "capital": true, "level": 2},
-    {"x": 4, "y": 10, "owner": "player", "level": 1},
-    {"x": 15, "y": 3, "owner": "enemy", "capital": true, "level": 4, "walls": true},
+    {"x": 2, "y": 14, "owner": "player", "capital": true, "level": 3},
+    {"x": 4, "y": 10, "owner": "player", "level": 2},
+    {"x": 15, "y": 3, "owner": "enemy", "capital": true, "level": 3, "walls": true},
     {"x": 13, "y": 7, "owner": "enemy", "level": 2, "walls": true},
     {"x": 12, "y": 14, "owner": null, "level": 1},
     {"x": 6, "y": 4, "owner": null, "level": 1},

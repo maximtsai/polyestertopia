@@ -37,6 +37,7 @@ function base(overrides) {
     economy: 4.0,
     reward: 0.4,
     navalUpgrade: 1.2,
+    jitter: 0.5,
     ...overrides,
   };
 }
